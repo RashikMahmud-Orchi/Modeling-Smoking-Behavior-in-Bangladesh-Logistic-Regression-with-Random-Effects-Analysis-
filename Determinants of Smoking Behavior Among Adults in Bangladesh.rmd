@@ -1,0 +1,561 @@
+---
+title: "Determinants of Smoking Behavior Among Adults in Bangladesh: A Generalized Linear Model Analysis of Socio-Demographic and Environmental Factors"
+author: "Rashik Mahmud Orchi"
+date: "10/04/2024"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+# Abstract
+
+This study examines the determinants of smoking behavior among adults in Bangladesh using a Generalized Linear Model (GLM). Analyzing socio-demographic and environmental factors, we found gender, education level, and geographical division to be significant predictors of smoking. Specifically, being of the second gender category and higher education levels were associated with increased log odds of smoking. Regional disparities were also evident, with divisions like Dhaka and Mymensingh showing significant differences in smoking behavior. Interestingly, wealth index and other variables such as residence, transport, and healthcare access did not significantly influence smoking odds. The model’s AIC value of 479.58 and the well-fitted Dharma residual plots indicate a reliable model. Our findings underscore the need for targeted interventions to address the identified influential factors, contributing to the global effort to reduce tobacco use and its health implications.
+
+# Keywords
+
+Wealth Index, Generalized Linear Model (GLM), Binning, Down-sampling, Logistic Regression, Akaike Information Criterion (AIC), Time Series, Generalized Linear Mixed Model (GLMM)
+
+# Introduction
+
+Bangladesh, with a burgeoning population of 171.2 million (Tobacco Control Research Group, 2023), grapples with a pervasive tobacco epidemic. The prevalence of tobacco use stands at a staggering 43.7% (Tobacco Control Research Group, 2023), reflecting a deeply entrenched public health challenge. In 2018, the repercussions of this widespread tobacco consumption were starkly evident, as approximately 1.5 million adults were afflicted with diseases attributable to tobacco use (Nargis et al., 2022). The impact on the younger demographic is equally alarming, with 61,000 children suffering from ailments linked to secondhand smoke exposure in the same year (Nargis et al., 2022).
+The mortality toll from tobacco use is profound, accounting for 125.72 thousand deaths in 2018 alone, which represents 13.5% of all-cause mortality (Nargis et al., 2022). This not only signifies a loss of life but also a substantial economic burden. The total economic cost, encompassing both direct healthcare expenses and indirect costs such as lost productivity, amounted to USD 3.61 billion. This economic toll is equivalent to 1.4% of Bangladesh's GDP, underscoring the significant financial strain on the nation's economy (Nargis et al., 2022).
+
+The government of Bangladesh has recognized the gravity of this issue and has been working towards tobacco control. Notably, the Prime Minister Sheikh Hasina has declared an ambitious goal to render Bangladesh tobacco-free by 2040. This commitment is reflected in the increased compliance with the World Health Organization Framework Convention on Tobacco Control (WHO FCTC), the establishment of a dedicated tobacco control cell, and the introduction of a health surcharge on all tobacco products.
+Despite these efforts, challenges persist, particularly in the form of industry interference in public policy, notably by entities such as British American Tobacco Bangladesh (BATB), in which the state holds a significant share. Addressing these challenges is crucial for the realization of the tobacco-free vision for Bangladesh.
+
+Considering these sobering statistics and the ongoing efforts to combat the tobacco crisis, this paper aims to delve into the multifaceted dimensions of the tobacco problem in Bangladesh, exploring its health, social, and economic impacts, and evaluating the effectiveness of current policies and interventions.
+To investigate this issue, we chose the dataset, ‘Global Adult Tobacco Survey (GATS) – Bangladesh 2017’. This dataset is a nationwide household survey of adults aged 15 or above, using a standard method to collect data on different aspects of tobacco use and exposure. The aim is to understand the patterns, determinants, and consequences of tobacco use in Bangladesh, and the subsequent impact this usage may have on the overall health of the people.
+
+The research questions are:
+
+*1. RQ1 - What are the socio-economic factors associated with tobacco smoking among adults in Bangladesh?*
+
+*2. RQ2 - What is the impact of smoking tobacco in public places on the prevalence of smoking behavior of individuals in Bangladesh?*
+
+Our research question RQ1 seeks to identify and analyze the socio-economic variables that correlate with tobacco smoking among adults in Bangladesh. By understanding these factors, the research can highlight the demographic segments most vulnerable to tobacco use and the socio-economic conditions that facilitate this behavior. This knowledge is crucial for designing targeted interventions and policies to reduce tobacco consumption and its associated health risks.
+RQ2 on the other hand aims to evaluate the influence of smoking tobacco in public places on individual smoking habits. It explores whether the visibility and social acceptance of smoking in public areas contribute to higher rates of smoking among the population. The findings could inform public health strategies, including the need for stricter enforcement of smoking bans in public places to curb the prevalence of smoking and protect non-smokers from secondhand smoke exposure.
+
+Both questions are integral to developing a comprehensive understanding of the tobacco problem in Bangladesh and formulating effective tobacco control measures. By addressing these questions, our research could provide evidence-based recommendations to policymakers and health practitioners working towards the reduction of tobacco-related harm in the country.
+
+# Data Description
+
+The target population of the survey by GATS Bangladesh 2017 includes all non-institutionalized Bangladeshi men and women ranging from 15 years and older. They were all sampled from the households that they consider their usual place of residence. Here, stratified multi-stage cluster sampling was done through an interview consisting of a household screening component and an individual component administered to the selected respondent. Data was collected using electronic handheld devices. The sample size was 14,880 selected households with 12,783 completed individual interviews.
+
+The questionnaire included core questions about background characteristics, tobacco smoking, electronic cigarettes, smokeless tobacco, cessation, secondhand smoke, economics, media, cigarette pack/picture, and knowledge, attitudes, and perceptions. The dataset contains 516 columns containing unique case ID, interviewer ID, and questions, and 12784 rows with valid responses. For the purpose of our modeling and analysis, we downsampled the data to 77 columns and 451 rows.
+
+# Methodology
+
+This section outlines the research design, population and sample, data collection methods, and data analysis plan employed in this study investigating the relationship between socio-economic factors and smoking behavior in Bangladesh. 
+
+## Research Design
+
+This research relies on the quantitative method and is conducted on the basis of a cross sectional research design. Quantitative research obtains numerical data that allows for evaluating the associations between two or more variables. A cross-sectional design is such where data are collected with a subpopulation sample of the population. Through employing this method, we explore the extent of the adoption of smoking and its associations with the socio-economic variables among those Bangladeshis who participated in the 2017 survey.
+
+## Population and Sample
+
+The target group for the following study are all Bangladeshis that are 15 and above in age, encompassing 14,880 households across the country. The dataset of this investigation is Global Adult Tobacco Survey in Bangladesh which took places in year 2017. The survey conducted by the Bangladesh Bureau of Statistics and the National Tobacco Control Cell employs a multistage stratified cluster sampling approach to secure nation representation. Such method includes stratifying the masses into strata (like regions) and then randomly choosing clusters within each stratum. The next step is that there is one or more than one person chosen at random from every nominated household. Participation in the study peaked at 90.8% reaching a final point of 12,783 participants in Bangladesh.
+
+## Data Collection Methods
+
+The data for this study was achieved by way of direct talking (in-person survey) with trained persons who used GATS questionnaire as their instrument. Modules of GATS questionnaire comprises of core and optional sections targeted at different categories of tobacco use submitted by the individuals. These relevant sectioned areas cover the domains of demographics, smoking pattern, knowledge, attitude, medical history and exposure to second hand smoke. Our research examines key modules within the core modules that are relevant to our research problem question, focusing on socio-economic issues and smoking behaviors.
+
+## Data Analysis Plan
+
+This study will employ a two-main approaches to data analysis - 1. Data Cleaning, and 2. Feature Engineering 
+
+Data cleaning methods will be implemented to address missing values and inconsistencies within the dataset. Techniques such as binning for continuous variables and down-sampling for variables with a high proportion of missing values are used majorly considering specific data distribution.
+
+Feature engineering is used to build a wealth index, composed of the number of major household possessions and some other variables to calculate the level of social and economic status of a person. In this we can assess the effect of wealth on smoking behavior since we don’t have explicit variable to use as reference.
+
+## Statistical Modeling
+
+The main technique of statistical inference used in this study will be logistic regression in order to explore the correlation between social-economic factors (which will include the wealth index that we construct using different variables from dataset as independent variables) and smoking (dependent variable). The use of Generalized Linear Model (GLM), specifically logistic regression is used because of binary nature of our analysis, it is supposed to explore the relationship between smoking status (smokers vs. non-smokers) and indicator variables. This model helps us to find out the strongest links between socio-economic features and smoking.
+
+## Model Validation
+The diagnostic tests will be utilized to confirm the model fitting (e.g., residual plots, Q-Q-Plot) and the model's suitability will be assessed. Coefficient values from the GLM are of primary interest, allowing us to assess the significance and direction of associations between independent variables and smoking prevalence.
+
+Various techniques on the selected variables was used to achieve the smallest AIC value for data fitting procedures. The balance between the factor of model complexity and predictive power is the main goal.
+
+## Additional Considerations
+
+As the data is hierarchical (individuals grouped in clusters), we will examine the application of Generalized Linear Mixed Models (GLMMs) to control for random effects of clustering. However, preliminary analyses indicate minimal random effects, leading us to focus on the GLM framework
+
+
+## Explanation of Statistical Techniques
+
+*Binning:* This technique involves grouping continuous variables into discrete categories based on pre-defined cut-off points. This can be useful for preparing continuous variables for use with statistical models that require categorical data.
+
+*Down-sampling:* This involves removing observations (data points) from a dataset to address situations with imbalanced classes (e.g., a high proportion of missing values). In our case, all the NAN values were removed.
+
+*Logistic Regression:* This is a statistical method used to model the relationship between a binary dependent variable (e.g., smoker vs. non-smoker) and one or more independent variables (e.g., socio-economic factors). It estimates the probability of an event (smoking) occurring based on the values of the independent variables.
+
+*AIC (Akaike Information Criterion):* This is a measure of model complexity that penalizes models for having too many parameters. The goal is to select the model with the lowest AIC value, which balances model fit.
+
+# Literature Review
+
+The use of tobacco by smokers, in particular, remains an area of debate in public health in Bangladesh. The present review inspects the social- economic factors associated with smoking in Bangladesh, and the public- smoking bylaws under this concept. Besides, it comprises the most applicable theoretical constructs, which will act as a guide for the other researchers in this area.
+
+## Socio-Economic Factors and Smoking
+
+A wide range of examinations provides evidence to show that socio-economic determinants and the rate of smoking are correlated strongly. In a study in Bangladesh, they found substantial evidence that is anchored to the economic background of an individual as the cause of smoking habit. Individuals with low income levels and wealth exhibited higher chances of smoking[3]. This evidence is in line with world trends because early childhood poverty is a strong indicator of the likelihood of catching the behavior of smoking and never quitting it early in life.
+
+## Public Smoking Policies and Smoking Behavior 
+
+The general introduction of the prohibition of public smoking has become a great tool to fight against smoking. An investigation into the influence of public smoking regulation in Bangladesh resulted in a decline in smoking behaviour after the enactment of such laws[2]. This indicates that limiting smoking in public areas can be a very useful tool for the reduction of overall smoking rates.
+
+## Theoretical Framework
+
+Moreover, smoking behavior presents a range of theories to be able to understand smoking habits. For example, the Health-Belief Model[4] emphasizes how smokers decide on their potential risk of getting the disease or dying young, how serious the disease or death could be, and the level of advantage they think can benefit them by willingly stopping smoking can highly impact the constancy of their behavior. In addition, Social Cognitive Theory[1] highlights the role of social learning and external experiences in adolescents in the emergence and continuation of smoking customs.
+
+```{r}
+rm(list=ls())
+```
+
+# 4. Analysis
+
+```{r}
+library(readxl)
+library(dplyr)
+suppressWarnings({
+  Bangla_GATS_2017_Public_use_06Spe2018 <- read_excel("dataset/Bangla_GATS_2017_Public_use_06Spe2018.xlsx")
+})
+
+```
+
+
+```{r}
+df <- Bangla_GATS_2017_Public_use_06Spe2018 %>%
+  select(CASEID,A04,A06A,A06D,A06E,A06G,A06H,A06I,A06J,A06K,A06L,A06M,A06N,A06O,A06P,A06P,A06Q,A06R,A06T,A06U,A14, A06B,HH2,HH4E01,HH4B01, HH4D01, RESIDENCE,E12,E14, E16,E20,E11,E13, E15,E19,divisionid,gatsstrata,gatscluster,gatsweight)
+```
+
+
+
+
+
+```{r}
+summary(df)
+
+```
+
+
+
+
+
+```{r}
+#######Wealth index
+###### New columns have be mutated
+#####Previously the value of data was 1& 2
+######So it has been converted to binary.
+
+
+df <- df %>%
+  mutate(
+    Electricity = ifelse(A06A == 1, 1, 0),
+    Flush_toilet = ifelse(A06B == 1, 1, 0),
+    Mobile_phone = ifelse(A06D == 1, 1, 0),
+    Television = ifelse(A06E == 1, 1, 0),
+    refrigerator = ifelse(A06G == 1, 1, 0),
+    car_rickshaw= ifelse(A06H == 1, 1, 0),
+    cycle_motorcyclce = ifelse(A06I == 1, 1, 0),
+    washing_machine = ifelse(A06J == 1, 1, 0),
+    Almirah_Wardrobe = ifelse(A06M == 1, 1, 0),
+    table = ifelse(A06N == 1, 1, 0),
+    bed = ifelse(A06O == 1, 1, 0),
+    chair = ifelse(A06P == 1, 1, 0),
+    Computer_Laptop_Tab = ifelse(A06R == 1, 1, 0),
+    domestic_animal = ifelse(A06T == 1, 1, 0),
+    rooftop_material = ifelse(A14 %in% c(1, 2), 0, 1) 
+  )
+
+```
+
+
+```{r}
+
+#####PCA###########
+library(psych)
+
+asset_variables <- select(df, c(
+  Electricity, Flush_toilet, Mobile_phone, Television, refrigerator,
+  car_rickshaw, cycle_motorcyclce, washing_machine, Almirah_Wardrobe,
+  table, bed, chair, Computer_Laptop_Tab, domestic_animal, rooftop_material
+))
+
+
+
+
+
+```
+
+
+
+
+
+```{r}
+# Since the variables are binary therefore we calculated through MCA
+
+# Performing MCA using the principal() function
+mca_result <- principal(asset_variables, nfactors = 2, rotate = "none")  
+
+ # Summary of the MCA results
+summary(mca_result) 
+
+  
+
+```
+
+```{r}
+plot(mca_result)
+
+
+
+```
+```{r}
+df <- df %>%
+  mutate(
+    wealth_index = as.vector(mca_result$scores[, 1])
+  )
+```
+
+
+
+```{r}
+##Creating hospital,restaurant, transport,school column 
+## The vales have been converted to 0 and 1.
+df <- df %>%
+  mutate(
+    hospital = case_when(
+      E11 == 1 & E12 == 2 ~ 0,
+      E11 == 1 & E12 == 1 ~ 1,
+      TRUE ~ NA_real_  
+    ),
+    restaurant = case_when(
+      E13 == 1 & E14 == 2 ~ 0,
+      E13 == 1 & E14 == 1 ~ 1,
+      TRUE ~ NA_real_
+    ),
+    transport = case_when(
+      E15 == 1 & E16 == 2 ~ 0,
+      E15 == 1 & E16 == 1 ~ 1,
+      TRUE ~ NA_real_ 
+    ),
+    school = case_when(
+      E19 == 1 & E20 == 2 ~ 0,
+      E19 == 1 & E20 == 1 ~ 1,
+      TRUE ~ NA_real_ 
+    )
+  )
+
+```
+
+
+
+
+```{r}
+
+##############AGE group
+### We did binning of the continous variable HH4B01(age)
+breaks <- c(15, 35, 50, 65, 80, 105)
+
+
+labels <- c("15-34", "35-49", "50-64", "65-79", "80-105")
+
+
+df <- df %>%
+  mutate(age_group = cut(HH4B01, breaks = breaks, labels = labels, include.lowest = TRUE))
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+############education level######
+############education level######
+df <- df %>%
+  mutate(education = case_when(
+    A04 == 1 ~ "No Schooling",
+    A04 %in% c(2, 3) ~ "atbest_Primary",
+    A04 %in% c(4, 5) ~ "atbest_Secondary",
+    A04 %in% c(6, 7, 8) ~ "Higher_Education",
+    TRUE ~ NA_character_  
+  ))
+
+#####We have set the order of the education variable
+df$education <- factor(df$education, levels = c("No Schooling", "atbest_Primary", "atbest_Secondary", "Higher_Education"), ordered = TRUE)
+```
+
+```{r}
+############
+
+df <- df %>%
+  mutate(Division_Name = case_when(
+    divisionid == 10 ~ "Barisal",
+    divisionid == 20 ~ "Chittagong",
+    divisionid == 30 ~ "Dhaka",
+    divisionid == 40 ~ "Khulna",
+    divisionid == 45 ~ "Mymensingh",
+    divisionid == 50 ~ "Rajshahi",
+    divisionid == 55 ~ "Rangpur",
+    divisionid == 60 ~ "Sylhet",
+    TRUE ~ as.character(divisionid)  
+  ))
+```
+
+
+
+
+
+
+```{r}
+#############Residence########
+names(df)[names(df) == "HH4D01"] <- "gender"
+df$gender <- as.factor(df$gender)
+
+
+df$RESIDENCE <- as.factor(df$RESIDENCE)
+
+
+```
+
+
+
+```{r}
+
+####Down-sampling Based on our criteria
+
+
+######smoking
+
+###removing smoking that are invalid
+df <- df %>%
+  mutate(smoking = ifelse(HH4E01 == 2, 0, 1)) %>%
+  filter(HH4E01 != 7)
+
+########Dropping observations that don't satsify the requirements of our research design
+new_df <- df %>%
+  filter(!is.na(hospital) & !is.na(school) & !is.na(transport) & !is.na(restaurant))
+```
+
+
+```{r}
+new_df$Division_Name= as.factor(new_df$Division_Name)
+```
+
+
+
+```{r}
+summary(new_df)
+```
+
+
+
+
+
+
+```{r}
+########with age_group binned 
+m1 <- glm(smoking~age_group+gender+wealth_index+RESIDENCE+transport+school+hospital+restaurant+education+Division_Name,data = new_df, family = "binomial")
+summary(m1)
+```
+
+
+
+```{r}
+library(car)
+
+# Fit the logistic regression model
+m1 <- glm(smoking ~ age_group + gender + wealth_index + RESIDENCE + transport + school + hospital + restaurant + education + Division_Name, data = new_df, family = "binomial")
+
+# Check for multicollinearity using VIF
+vif_results <- vif(m1)
+print(vif_results)
+```
+
+
+```{r}
+
+library("DHARMa")
+
+residuals <- simulateResiduals(m1)
+
+plot(residuals)
+
+```
+
+
+
+```{r}
+# Creating a survey design object to include the survey weight
+###install.packages("survey")
+library(survey)
+survey_design <- suppressWarnings(svydesign(ids = ~1, weights = ~gatsweight, data = new_df))
+```
+
+```{r}
+# Estimating represntation of each observation of the total populaton
+
+total_population <- sum(weights(survey_design))
+
+
+representation <- total_population / nrow(new_df)
+
+
+print(representation)
+
+```
+So, each obeservation in the dataset represent 7460 person in real life. 
+
+```{r}
+###Model Incorporating Survey Weight
+
+m1_survey <- svyglm(smoking ~ age_group + gender + wealth_index + RESIDENCE + transport + school + hospital + restaurant + education + Division_Name, 
+              design = survey_design, family = "binomial")
+
+# Summarize the model results
+summary(m1_survey)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+step(m1)
+```
+
+```{r}
+####Avergae Marginal effect
+###install.packages("margins")
+library(margins)
+
+# Calculating marginal effects
+margins_obj <- margins(m1)
+
+# Display summary of marginal effects
+summary(margins_obj)
+```
+
+
+
+
+
+```{r}
+
+
+m_1 <- glm(smoking ~ age_group + gender + wealth_index + RESIDENCE + transport + 
+    school + education,data = new_df, family = "binomial")
+summary(m_1)
+```
+
+
+
+
+
+
+
+
+```{r}
+library(lme4)
+
+# 'strata' will be used as a random effect
+model <- glmer(smoking ~ HH4B01 + gender + wealth_index + RESIDENCE + transport + 
+               school + hospital + restaurant + education + (1|gatsstrata), 
+               family = binomial, data = new_df)
+
+# Summary of the model
+summary(model)
+```
+
+
+
+
+# Results
+
+Our analysis utilized a GLM to investigate the determinants of smoking behavior among adults in Bangladesh. The model incorporated various socio-demographic and environmental factors, yielding insights into their respective influences on the likelihood of tobacco use.
+
+The coefficient of age_group.L suggests a change in the log odds of smoking for this age group compared to the reference category, but the large standard errors and non-significant p-values indicate high uncertainty in this estimate. The coefficient age_group.Q reflects the quadratic relationship with smoking odds, yet the statistical insignificance suggests caution in interpretation. The rest of the age groups show non-significant associations with smoking behavior, as indicated by their large standard errors and p-values.
+
+A coefficient of 4.46070 for gender indicates a substantial increase in the log odds of smoking for the second gender category compared to the first. This effect is statistically significant at the 0.001 level, highlighting gender as a significant predictor of smoking behavior.
+
+Wealth index is not statistically significant, suggesting wealth status does not significantly influence smoking odds within this dataset. The variables residence, transport, hospital, restaurant did not show a statistically significant effect on the log odds of smoking. School showed marginally significant at the 0.1 level, indicating a potential influence of educational environments on smoking behavior.
+
+The coefficients for education for different levels of education reveal that the linear term (education.L) is statistically significant at the 0.05 level, suggesting a notable difference in smoking odds between the reference education level and this particular level.
+
+The coefficients for divisions like Dhaka and Mymensingh are statistically significant, indicating regional disparities in smoking behavior compared to the reference division.
+
+The AIC value and Dharma residual plots indicate a good fit for the model, with residuals displaying an appropriate distribution.
+
+While gender and education level show significant associations with smoking behavior, other variables do not exhibit statistically significant effects. The interpretation of these results should be approached with caution, particularly for coefficients with large standard errors and non-significant p-values.
+
+So, our findings reveal that gender, education level, and geographical division are influential factors in smoking behavior among adults in Bangladesh. The model indicates that these variables have a statistically significant association with the likelihood of an individual being a smoker, suggesting that targeted interventions may be necessary to address these specific demographics.
+
+The AIC value for our GLM was calculated to be 479.58, which provides a measure of the relative quality of the statistical model for a given set of data. This value aids in model selection, where a lower AIC value would indicate a better fit of the model to the data.
+
+Further analysis was conducted using Dharma residual plots, which demonstrated that the residuals from our GLM had a good fit. This suggests that the model assumptions were met, and the variance was consistently distributed, indicating the reliability of our model's predictions.
+
+Despite the presence of data clustering within our dataset, which often necessitates the use of Generalized Linear Mixed Models (GLMM) to account for random effects, our analysis revealed no significant random effects. This finding implies that the fixed effects model provided by GLM was sufficient for our data structure and the variables of interest.
+
+Interestingly, the wealth index did not emerge as a statistically significant predictor in our model. This outcome suggests that, within the context of our study, wealth status did not have a discernible impact on smoking behavior among the surveyed population.
+
+# Impact and Limitations
+
+## Impact
+
+*Gender, Education Level, and Location-based Impact:* The GLM model highlighting gender, education level, and division as influential factors underscores the need for any specific strategies. Implementing gender-sensitive smoking cessation programs and educational campaigns can have significant impact on society as addressing educational disparities can lead to better outcomes.
+
+*Behavioral Interventions:* We can use these findings to design evidence-based interventions. For example, targeting low-income individuals, promoting smoke-free public spaces, and providing educational resources. Allocating resources to effective behavioral interventions and monitoring their impact can bring positive social outcomes. 
+
+## Limitations
+
+*Lack of Causality:* Since our dataset captures only cross-sectional data at a specific point in time, they may reveal associations, but they cannot establish causality. In fact, our logistic regression provides associations but not causal relationships. We have identified associations between various factors and smoking, but causality will require rigorous experimental designs.
+
+*Self-Reported Data:* GATS relies on self-reported information, which can be subject to recall bias or social desirability bias. Participants may underreport or overreport smoking behavior which would heavily influence our results.
+
+*Missing Data Handling:* Dealing with missing values in time series can be tricky. Traditional methods like linear interpolation may not suffice, especially if the missingness is non-random. 
+
+
+# Conclusion
+
+## Summary of Findings
+
+*RQ1:* What are the socio-economic factors associated with tobacco smoking among adults in Bangladesh?
+
+We found that gender, education level, and division (location) has an impact on smoking behavior among adults in Bangladesh.
+
+*RQ2:* What is the impact of smoking tobacco in public places on the prevalence of smoking behavior of individuals in Bangladesh?
+
+We were unable to prove that smoking tobacco in public places has any impact on smoking behavior of individuals in Bangladesh. 
+
+## Recommendations
+
+*Causal Inference in Socio-Economic Studies:* There is scope to develop research designs beyond cross-sectional studies to establish causal relationships between socio-economic factors and smoking behavior. Longitudinal or experimental designs can be explored to establish causality here. However, policy-wise, funding and support for research is needed that focuses on causal inference, allowing for evidence-based policy decisions.
+
+*Longitudinal Trajectories and Behavioral Memory:* Sophisticated machine learning approaches can be taken to model longitudinal trajectories using time series data. Addressing challenges such as missing data, synthetic data generation, and uncertainty estimation can help in this regard. The temporal patterns of smoking behavior over extended periods can also be investigated to understand how smoking habits evolve, including factors that trigger transitions (e.g., quitting attempts, relapses).
+
+# References
+
+1.	Bandura, A. (2014). Social-cognitive theory. In An introduction to theories of personality (pp. 341-360). Psychology Press.
+
+2.	Hoque, M. M., & Tama, R. A. Z. (2021). Implementation of Tobacco Control Policies in Bangladesh: A Political Economy Analysis. Public Administration Research, 10(2), 36. https://doi.org/10.5539/par.v10n2p36
+
+3.	Hoque, Md Mahmudul & Tama, Riffat Ara Zannat (2021). Implementation of Tobacco Control Policies in Bangladesh: A Political Economy Analysis. Public Administration Research 10 (2):36-51.
+https://philpapers.org/rec/HOQIOT
+
+4.	Nargis, N., Faruque, G. M., Ahmed, M., Huq, I., Parven, R., Wadood, S. N., Hussain, A. G., & Drope, J. (2022). A comprehensive economic assessment of the health effects of tobacco use and implications for tobacco control in Bangladesh. Tobacco control, 31(6), 723–729. https://doi.org/10.1136/tobaccocontrol-2020-056175
+
+5.	Rosenstock, I. M. (1974). The Health Belief Model and Preventive Health Behavior. Health Education Monographs, 2(4), 354-386. https://journals.sagepub.com/doi/abs/10.1177/109019817400200405
+
+6.	Tobacco Control Research Group. (2023, September 14). Bangladesh Country Profile. Tobacco Tactics. Retrieved February 14, 2024, from https://tobaccotactics.org/article/bangladesh-country-profile/
